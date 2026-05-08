@@ -4,10 +4,26 @@ from django.utils.text import slugify
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100, unique = True, blank=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     akb = models.PositiveIntegerField(help_text='Акб')
-    storage = models.IntegerField(help_text='Память')
+    
+    # 1. Создаем список вариантов памяти
+    STORAGE_CHOICES = [
+        (64, '64 GB'),
+        (128, '128 GB'),
+        (256, '256 GB'),
+        (512, '512 GB'),
+        (1024, '1 TB'),
+    ]
+    
+    # 2. Меняем обычный IntegerField на поле с выбором (choices)
+    storage = models.IntegerField(
+        choices=STORAGE_CHOICES, 
+        default=128, 
+        help_text='Память'
+    )
+    
     color = models.CharField(max_length=50)
     CONDITION_CHOICES = [
         ('new', 'Новый'),
@@ -26,6 +42,5 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.storage}GB)"
-
 
 

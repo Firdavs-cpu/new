@@ -1,0 +1,38 @@
+
+{% block content %}
+<div class="product-container" style="display: flex; gap: 40px; padding: 20px;">
+    
+    <!-- Левая часть: Фото -->
+    <div class="product-image" style="flex: 1;">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    </div>
+
+    <!-- Правая часть: Информация -->
+    <div class="product-info" style="flex: 1;">
+        <h1>{{ product.name }}</h1>
+        
+        <div class="specs" style="margin: 20px 0; font-size: 1.1rem; line-height: 2;">
+            <p><strong>Состояние:</strong> {{ product.get_condition_display }}</p>
+            <p><strong>Память:</strong> {{ product.get_storage_display }}</p>
+            <p><strong>Цвет:</strong> {{ product.color }}</p>
+            <p><strong>АКБ:</strong> {{ product.akb }}%</p>
+        </div>
+
+        <div class="price" style="font-size: 2rem; color: #28a745; font-weight: bold; margin-bottom: 20px;">
+            {{ product.price }} ₽
+        </div>
+
+        {% if product.description %}
+            <div class="description" style="margin-bottom: 30px; color: #555;">
+                <h3>Описание</h3>
+                <p>{{ product.description }}</p>
+            </div>
+        {% endif %}
+
+        <!-- Кнопка действия -->
+        <a href="https://wa.me" class="buy-button" style="display: inline-block; padding: 15px 30px; background: #007bff; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">
+            Написать в WhatsApp
+        </a>
+    </div>
+</div>
+{% endblock %}

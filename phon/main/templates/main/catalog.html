@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone Store | Купить Apple</title>
+    <style>
+        /* Собственные стили в стиле Apple */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f5f7;
+            margin: 0;
+            color: #1d1d1f;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            color: white;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: block;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 600;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            letter-spacing: -0.02em;
+        }
+
+        /* Сетка товаров */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* Карточка товара */
+        .iphone-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .iphone-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .iphone-card img {
+            max-width: 100%;
+            height: 220px;
+            object-fit: contain;
+            margin-bottom: 20px;
+        }
+
+        .iphone-card h2 {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        .info {
+            font-size: 0.95rem;
+            color: #86868b;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .price {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .buy-btn {
+            background-color: #0071e3;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .buy-btn:hover {
+            background-color: #0077ed;
+        }
+
+        .condition-badge {
+            display: inline-block;
+            background: #f5f5f7;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            color: #0071e3;
+            font-weight: 600;
+        }
+
+        /* Адаптивность для мобилок */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .product-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo">iPhone Store</a>
+    </header>
+
+    <div class="container">
+        <h1>Встречайте iPhone.</h1>
+
+            <div class="product-grid">
+            {% for product in products %} <!-- Используем имя 'product' здесь -->
+            <div class="iphone-card"> <!-- Используем класс из твоих стилей 'iphone-card' -->
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <h2>{{ product.name }}</h2>
+                <div class="info">
+                    <span class="condition-badge">{{ product.get_condition_display }}</span><br>
+                    Память: {{ product.get_storage_display }} | АКБ: {{ product.akb }}%
+                </div>
+                <span class="price">{{ product.price }} руб.</span>
+
+                {% if product.slug %}
+                    <a href="{% url 'main:product_detail' product.slug %}" class="buy-btn">
+                        Купить
+                    </a>
+                {% else %}
+                    <span style="color: red;">Ошибка: нет слага</span>
+                {% endif %}
+            </div>
+            {% empty %}
+                <p style="text-align: center; grid-column: 1/-1;">На данный момент товаров нет в наличии.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</body>
+</html>
