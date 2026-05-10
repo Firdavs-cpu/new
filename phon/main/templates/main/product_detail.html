@@ -1,38 +1,79 @@
 
 {% block content %}
-<div class="product-container" style="display: flex; gap: 40px; padding: 20px;">
+<div class="product-container" style="display: flex; gap: 40px; padding: 40px; max-width: 1200px; margin: 0 auto; flex-wrap: wrap;">
     
-    <!-- Левая часть: Фото -->
-    <div class="product-image" style="flex: 1;">
-        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <!-- Левая часть: ГАЛЕРЕЯ -->
+    <div class="product-visuals" style="flex: 1; min-width: 300px;">
+        <!-- Главное большое фото -->
+        <div class="main-image-container">
+            <img id="mainImage" src="{{ product.image.url }}" alt="{{ product.name }}" 
+                 style="width: 100%; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: 0.3s;">
+        </div>
+
+        <!-- Миниатюры -->
+        <div class="thumbnails" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px;">
+            <!-- Первое маленькое — это само главное фото -->
+            <img class="thumb" src="{{ product.image.url }}" onclick="changeImage(this.src)"
+                 style="width: 100%; height: 80px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid #007bff;">
+            
+            <!-- Остальные из доп. моделей -->
+            {% for extra in product.images.all %}
+                <img class="thumb" src="{{ extra.image.url }}" onclick="changeImage(this.src)"
+                     style="width: 100%; height: 80px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: 0.3s;"
+                     onmouseover="this.style.borderColor='#007bff'" onmouseout="if(document.getElementById('mainImage').src != this.src) this.style.borderColor='transparent'">
+            {% endfor %}
+        </div>
     </div>
 
-    <!-- Правая часть: Информация -->
-    <div class="product-info" style="flex: 1;">
-        <h1>{{ product.name }}</h1>
-        
-        <div class="specs" style="margin: 20px 0; font-size: 1.1rem; line-height: 2;">
-            <p><strong>Состояние:</strong> {{ product.get_condition_display }}</p>
-            <p><strong>Память:</strong> {{ product.get_storage_display }}</p>
-            <p><strong>Цвет:</strong> {{ product.color }}</p>
-            <p><strong>АКБ:</strong> {{ product.akb }}%</p>
+    <!-- Правая часть: ИНФО -->
+    <div class="product-info" style="flex: 1; min-width: 300px;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 10px;">{{ product.name }}</h1>
+        <span style="background: #f0f0f0; padding: 5px 15px; border-radius: 20px; font-weight: 500;">
+            {{ product.get_condition_display }}
+        </span>
+
+        <div class="specs" style="margin: 30px 0; font-size: 1.1rem; border-top: 1px solid #eee; padding-top: 20px;">
+            <p style="display: flex; justify-content: space-between;"><strong>Память:</strong> <span>{{ product.get_storage_display }}</span></p>
+            <p style="display: flex; justify-content: space-between;"><strong>Цвет:</strong> <span>{{ product.color }}</span></p>
+            <p style="display: flex; justify-content: space-between;"><strong>АКБ:</strong> <span>{{ product.akb }}%</span></p>
         </div>
 
-        <div class="price" style="font-size: 2rem; color: #28a745; font-weight: bold; margin-bottom: 20px;">
-            {{ product.price }} ₽
+        <div class="price" style="font-size: 2.5rem; font-weight: bold; margin-bottom: 30px;">
+            {{ product.price|floatformat:0 }} ₽
+
         </div>
+
+        <a href="https://wa.me! Интересует {{ product.name }}" 
+           style="display: block; text-align: center; padding: 20px; background: #1d1d1f; color: white; text-decoration: none; border-radius: 15px; font-size: 1.2rem; font-weight: 600; transition: 0.3s;"
+           onmouseover="this.style.backgroundColor='#333'" onmouseout="this.style.backgroundColor='#1d1d1f'">
+            Купить через WhatsApp
+        </a>
 
         {% if product.description %}
-            <div class="description" style="margin-bottom: 30px; color: #555;">
-                <h3>Описание</h3>
-                <p>{{ product.description }}</p>
+            <div style="margin-top: 40px;">
+                <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Описание</h3>
+                <p style="line-height: 1.6; color: #444;">{{ product.description }}</p>
             </div>
         {% endif %}
-
-        <!-- Кнопка действия -->
-        <a href="https://wa.me" class="buy-button" style="display: inline-block; padding: 15px 30px; background: #007bff; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">
-            Написать в WhatsApp
-        </a>
     </div>
 </div>
+
+<!-- JS для смены картинок -->
+<script>
+    function changeImage(src) {
+        // Меняем путь главной картинки
+        const mainImg = document.getElementById('mainImage');
+        mainImg.style.opacity = '0'; // Эффект затухания
+        
+        setTimeout(() => {
+            mainImg.src = src;
+            mainImg.style.opacity = '1';
+        }, 200);
+
+        // Подсвечиваем активную миниатюру
+        const thumbs = document.querySelectorAll('.thumb');
+        thumbs.forEach(t => t.style.borderColor = 'transparent');
+        event.target.style.borderColor = '#007bff';
+    }
+</script>
 {% endblock %}

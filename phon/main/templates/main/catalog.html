@@ -150,7 +150,7 @@
                     <span class="condition-badge">{{ product.get_condition_display }}</span><br>
                     Память: {{ product.get_storage_display }} | АКБ: {{ product.akb }}%
                 </div>
-                <span class="price">{{ product.price }} руб.</span>
+                <span class="price">{{ product.price|floatformat:0 }} руб.</span>
 
                 {% if product.slug %}
                     <a href="{% url 'main:product_detail' product.slug %}" class="buy-btn">

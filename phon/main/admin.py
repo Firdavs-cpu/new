@@ -1,13 +1,22 @@
 from django.contrib import admin
-from .models import Product
+from .models import Product, ProductImage
+
+
+
+class ProductImageInLine(admin.TabularInline):
+    model = ProductImage
+    extra = 9
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    # Эти колонки будут видны в списке всех товаров
     list_display = ('name', 'price', 'akb', 'storage', 'condition')
-    # По этим полям можно будет искать
     search_fields = ('name', 'description')
-    # Справа появится фильтр
     list_filter = ('condition', 'storage')
-    # Автоматическое заполнение слага при вводе имени
     prepopulated_fields = {'slug': ('name',)}
+    inlines = [ProductImageInLine]
+    prepopulated_fields = { 'slug': ('name',)}
+
+
+
+
