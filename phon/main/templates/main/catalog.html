@@ -125,18 +125,80 @@
             font-weight: 600;
         }
 
+        .iphone-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+         }
+        }
+
         /* Адаптивность для мобилок */
         @media (max-width: 600px) {
             h1 { font-size: 2rem; }
             .product-grid { grid-template-columns: 1fr; }
         }
+        
+
+        
     </style>
 </head>
 <body>
 
+
     <header>
         <a href="/" class="logo">iPhone Store</a>
     </header>
+        <!-- Блок фильтров -->
+    <div class="filter-section" style="text-align: center; margin: 40px 0;">
+        <div class="filter-group" style="margin-bottom: 20px;">
+            <span style="color: #86868b; font-size: 0.9rem; display: block; margin-bottom: 10px;">Память</span>
+            <a href="?" class="filter-chip">Все</a>
+            <a href="?storage=128" class="filter-chip">128 GB</a>
+            <a href="?storage=256" class="filter-chip">256 GB</a>
+            <a href="?storage=512" class="filter-chip">512 GB</a>
+        </div>
+
+        <div class="filter-group">
+            <span style="color: #86868b; font-size: 0.9rem; display: block; margin-bottom: 10px;">Состояние</span>
+            <a href="?condition=new" class="filter-chip">Новые</a>
+            <a href="?condition=ideal" class="filter-chip">Идеальные</a>
+            <a href="?condition=good" class="filter-chip">Хорошие</a>
+        </div>
+    </div>
+
+    <style>
+        .filter-chip {
+            display: inline-block;
+            padding: 8px 20px;
+            margin: 5px;
+            background: #ffffff;
+            border: 1px solid #d2d2d7;
+            border-radius: 20px;
+            color: #1d1d1f;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-chip:hover {
+            background: #f5f5f7;
+            border-color: #86868b;
+        }
+
+        /* Стиль для активного фильтра (опционально через JS) */
+        .filter-chip.active {
+            background: #0071e3;
+            color: white;
+            border-color: #0071e3;
+        }
+    </style>
+
 
     <div class="container">
         <h1>Встречайте iPhone.</h1>

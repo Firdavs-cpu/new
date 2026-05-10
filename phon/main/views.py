@@ -8,6 +8,22 @@ class IndexView(ListView):
     template_name = 'main/catalog.html' # Твой файл с каталогом
     context_object_name = 'products'
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        storage_filter = self.request.GET.get('storage')
+        condition_filter = self.request.GET.get('condition')
+
+        if storage_filter:
+            # Превращаем строку из URL в число, чтобы база данных поняла запрос
+            queryset = queryset.filter(storage=int(storage_filter))
+            
+        if condition_filter:
+            queryset = queryset.filter(condition=condition_filter)
+
+        return queryset
+
+    
+
 # 2. Исправляем ProductDetailView (убираем DateDetailView)
 class ProductDetailView(DetailView):
     model = Product
